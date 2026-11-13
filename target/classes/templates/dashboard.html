@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Dashboard | PeopleDesk</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div th:replace="~{fragments :: nav}"></div><main class="main-content">
+<header class="page-header"><div><p class="eyebrow">PEOPLE OPERATIONS / OVERVIEW</p><h1>Dashboard</h1><p class="muted">A live view of your workforce and monthly operations.</p></div><a class="button button-primary" th:href="@{/employees/new}">＋ Add employee</a></header>
+<div class="flash-message" th:if="${message}" th:text="${message}"></div>
+<section class="metric-grid">
+    <article class="metric-card"><span>Total employees</span><strong th:text="${totalEmployees}">0</strong><small>Active employee records</small></article>
+    <article class="metric-card accent-lime"><span>Departments</span><strong th:text="${totalDepartments}">0</strong><small>Teams in the directory</small></article>
+    <article class="metric-card accent-coral"><span>Average salary</span><strong th:text="${#numbers.formatDecimal(averageSalary,1,'COMMA',0,'POINT')}">0</strong><small>Monthly basic salary</small></article>
+    <article class="metric-card accent-blue"><span>Average attendance</span><strong><span th:text="${#numbers.formatDecimal(averageAttendance,1,1)}">0.0</span><small>%</small></strong><small>Across recorded months</small></article>
+    <article class="metric-card"><span>Pending leave</span><strong th:text="${pendingLeaves}">0</strong><small>Requests awaiting review</small></article>
+    <article class="metric-card accent-coral"><span>High risk flags</span><strong th:text="${highRiskCount}">0</strong><small>Rule-based review signals</small></article>
+</section>
+<section class="content-section"><div class="section-heading"><div><p class="eyebrow">DIRECTORY</p><h2>Recently joined</h2></div><a class="text-link" th:href="@{/employees}">View all employees →</a></div>
+<div class="table-wrap"><table><thead><tr><th>Employee</th><th>Department</th><th>Designation</th><th>Joined</th></tr></thead><tbody><tr th:each="employee : ${recentEmployees}"><td><strong th:text="${employee.name}"></strong><small th:text="${employee.employeeCode}"></small></td><td th:text="${employee.department != null ? employee.department.name : 'Unassigned'}"></td><td th:text="${employee.designation}"></td><td th:text="${employee.joiningDate}"></td></tr><tr th:if="${#lists.isEmpty(recentEmployees)}"><td colspan="4" class="empty-state">No employees yet. Add the first employee to get started.</td></tr></tbody></table></div></section>
+<footer class="page-footer">PeopleDesk · Chennai Institute of Technology · IT Department</footer></main></body></html>

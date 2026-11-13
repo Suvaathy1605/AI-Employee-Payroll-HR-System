@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Employee form | PeopleDesk</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments :: nav}"></div>
+
+<main class="main-content">
+
+    <header class="page-header">
+        <div>
+            <p class="eyebrow">DIRECTORY / EMPLOYEE RECORD</p>
+
+            <h1 th:text="${employee.id == null ? 'Add employee' : 'Edit employee'}">
+                Employee
+            </h1>
+
+            <p class="muted">
+                Required fields are marked in the form.
+            </p>
+        </div>
+
+        <a class="button button-quiet" th:href="@{/employees}">
+            ← Back to employees
+        </a>
+    </header>
+
+
+    <form class="form-panel"
+          th:action="@{/employees/save}"
+          th:object="${employee}"
+          method="post">
+
+        <input type="hidden"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}">
+
+        <input type="hidden" th:field="*{id}">
+
+
+        <div class="form-grid">
+
+            <!-- Employee ID -->
+            <label>
+                Employee ID
+
+                <input th:field="*{employeeCode}"
+                       required
+                       maxlength="24">
+
+                <small class="field-error"
+                       th:errors="*{employeeCode}">
+                </small>
+            </label>
+
+
+            <!-- Full Name -->
+            <label>
+                Full name
+
+                <input th:field="*{name}"
+                       required
+                       maxlength="100">
+
+                <small class="field-error"
+                       th:errors="*{name}">
+                </small>
+            </label>
+
+
+            <!-- Age -->
+            <label>
+                Age
+
+                <input type="number"
+                       th:field="*{age}"
+                       min="18"
+                       max="75"
+                       required>
+
+                <small class="field-error"
+                       th:errors="*{age}">
+                </small>
+            </label>
+
+
+            <!-- Gender -->
+            <label>
+                Gender
+
+                <select th:field="*{gender}" required>
+
+                    <option value="">
+                        Select
+                    </option>
+
+                    <option value="Female">
+                        Female
+                    </option>
+
+                    <option value="Male">
+                        Male
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+                <small class="field-error"
+                       th:errors="*{gender}">
+                </small>
+            </label>
+
+
+            <!-- Email -->
+            <label>
+                Email
+
+                <input type="email"
+                       th:field="*{email}"
+                       required>
+
+                <small class="field-error"
+                       th:errors="*{email}">
+                </small>
+            </label>
+
+
+            <!-- Phone -->
+            <label>
+                Phone
+
+                <input th:field="*{phone}"
+                       required
+                       maxlength="24">
+            </label>
+
+
+            <!-- Address -->
+            <label class="span-two">
+                Address
+
+                <input th:field="*{address}"
+                       required
+                       maxlength="300">
+            </label>
+
+
+            <!-- Department -->
+            <label>
+                Department
+
+                <select name="departmentId">
+
+                    <option value="">
+                        Unassigned
+                    </option>
+
+                    <option th:each="department : ${departments}"
+                            th:value="${department.id}"
+                            th:text="${department.name}"
+                            th:selected="${employee.department != null and employee.department.id == department.id}">
+                    </option>
+
+                </select>
+            </label>
+
+
+            <!-- Designation -->
+            <label>
+                Designation
+
+                <input th:field="*{designation}"
+                       required>
+            </label>
+
+
+            <!-- Joining Date -->
+            <label>
+                Joining date
+
+                <input type="date"
+                       th:field="*{joiningDate}"
+                       required>
+            </label>
+
+
+            <!-- Basic Salary -->
+            <label>
+                Basic salary
+
+                <input type="number"
+                       th:field="*{basicSalary}"
+                       min="0"
+                       step="0.01"
+                       required>
+
+                <small class="field-error"
+                       th:errors="*{basicSalary}">
+                </small>
+            </label>
+
+
+            <!-- Performance Score -->
+            <label>
+                Performance input (0–100)
+
+                <input type="number"
+                       th:field="*{performanceScore}"
+                       min="0"
+                       max="100"
+                       required>
+            </label>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a class="button button-quiet"
+               th:href="@{/employees}">
+                Cancel
+            </a>
+
+            <button class="button button-primary"
+                    type="submit">
+                Save employee
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+</body>
+</html>
